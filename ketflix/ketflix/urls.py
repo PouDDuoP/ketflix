@@ -17,9 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from series.views import HelloWorld
+from series.views import SerieView, EpisodeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', HelloWorld.as_view()),
+    path('series', SerieView.as_view()),
+    path('episodes/<int:serie_id>', EpisodeView.as_view(), name='episodes'),
 ]
