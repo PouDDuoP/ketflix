@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.documentation import include_docs_urls
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 from series.api import router
 
@@ -31,8 +35,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('series', SerieView.as_view()),
     path('episodes/<int:serie_id>', EpisodeView.as_view(), name='episodes'),
-    path('login', LoginView.as_view(), name='login'),
+    path('login', TokenObtainPairView.as_view(), name='login'),
     path('logout', LogoutView.as_view(), name='logout'),
     path('docs/', include_docs_urls(title='Docs de My API', public=False)),
-    path('api/', include(router))
+    path('api/', include(router)),
 ]

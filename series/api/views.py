@@ -1,6 +1,8 @@
 from rest_framework import status, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticated
+
 from series.api.serializers import SerieSerializer
 
 from series.models import Serie
@@ -9,6 +11,7 @@ from series.models import Serie
 # class SerieApiView(APIView):
 # class SerieApiView(viewsets.ViewSet):
 class SerieApiView(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     
     queryset = Serie.objects.all()
     serializer_class = SerieSerializer
