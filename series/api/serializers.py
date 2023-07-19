@@ -2,7 +2,10 @@
 from typing import Dict
 from django.forms import ValidationError
 from rest_framework import serializers
-from series.models import Episode, Serie
+from rest_framework.serializers import ModelSerializer
+from rest_framework.fields import SerializerMethodField
+from series.models import Episode, ScoreEpisode, Serie, Score
+from django.db.models.aggregates import Avg
 
 
 # class SerieSerializer(serializers.ModelSerializer):
@@ -46,20 +49,47 @@ from series.models import Episode, Serie
     #     return self.instance
 
 
-class SerieSerializer(serializers.ModelSerializer):
+class SerieSerializer(ModelSerializer):
     
     class Meta:
         model = Serie
         fields = ('id', 'title', 'description')
         
-class EpisodeSerializer(serializers.ModelSerializer):
+class EpisodeSerializer(ModelSerializer):
+
     class Meta:
         model = Episode
         fields = ('id', 'name')
         
-class DetailSeriesSerializer(serializers.ModelSerializer):
+class DetailSeriesSerializer(ModelSerializer):
     episodes = EpisodeSerializer(source='episode_set', many=True)
+    score = SerializerMethodField()
+    
+    def get_score(self, serie: Serie) -> int:
+        return Score.objects.filter(serie=serie.pk).aggregate(score=Avg(('score'))).get('score')
     
     class Meta:
         model = Serie
-        fields = ('id', 'title', 'description', 'episodes')
+        fields = ('id', 'title', 'description', 'episodes','score')
+        
+class DetailEpisodeSerializer(ModelSerializer):
+    score = SerializerMethodField()
+    
+    def get_score(self, serie: Episode) -> int:
+        return ScoreEpisode.objects.filter(episode=Episode.pk).aggregate(score=Avg(('score'))).get('score')
+    
+    class Meta:
+        model = Episode
+        fields = ('id', 'name', 'score')
+
+class ScoreSerializer(ModelSerializer):
+
+    class Meta:
+        model = Score
+        fields = ('id', 'user', 'serie', 'score')
+
+class ScoreEpisodeSerializer(ModelSerializer):
+
+    class Meta:
+        model = ScoreEpisode
+        fields = ('id', 'user', 'episode', 'score')

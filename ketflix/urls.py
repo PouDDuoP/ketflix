@@ -22,7 +22,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
-from series.api import router
+from series.api.router import router
 
 from series.views import SerieView, EpisodeView
 from series.api.views import SerieApiView
@@ -38,5 +38,5 @@ urlpatterns = [
     path('login', TokenObtainPairView.as_view(), name='login'),
     path('logout', LogoutView.as_view(), name='logout'),
     path('docs/', include_docs_urls(title='Docs de My API', public=False)),
-    path('api/', include(router)),
+    path('api/', include(router.urls)),
 ]
