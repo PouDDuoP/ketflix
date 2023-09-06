@@ -43,8 +43,8 @@ from series.models import Episode, Serie
     #     return self.list(request)
 
 class SerieApiView(ModelViewSet):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
-    permission_classes = [IsMeOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsMeOrReadOnly]
     serializer_class = SerieSerializer
     queryset = Serie.objects.all()
     
@@ -69,8 +69,8 @@ class SerieApiView(ModelViewSet):
     
 
 class EpisodesApiView(ModelViewSet):
-    # permission_classes = [IsAuthenticatedOrReadOnly]
-    permission_classes = [IsMeOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+    # permission_classes = [IsMeOrReadOnly]
     serializer_class = EpisodeSerializer
     queryset = Episode.objects.all()
     

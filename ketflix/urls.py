@@ -24,7 +24,7 @@ from rest_framework_simplejwt.views import (
 
 from series.api.router import router
 
-from series.views import SerieView, EpisodeView
+from series.views import SerieView, EpisodeView, ReportView
 from series.api.views import SerieApiView
 
 from users.views import LoginView, LogoutView
@@ -34,6 +34,7 @@ from users.views import LoginView, LogoutView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('series', SerieView.as_view()),
+    path('report', ReportView.as_view()),
     path('episodes/<int:serie_id>', EpisodeView.as_view(), name='episodes'),
     path('login', TokenObtainPairView.as_view(), name='login'),
     path('logout', LogoutView.as_view(), name='logout'),

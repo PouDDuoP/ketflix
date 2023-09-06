@@ -26,7 +26,7 @@ class TestSerie(TestCase):
 
         response = self.client.get(f'/api/series/{serie.pk}/')
         
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         
         response_json = response.json()
         
@@ -40,7 +40,8 @@ class TestSerie(TestCase):
         
     def test_create_serie(self):
         user = self._generate_user()
-        self.client.force_login(user)
+        # self.client.force_login(user)
+        self.client.login(user)
         
         serie_dict = {'title':f'mock serie {uuid4()}', 'description':f'mock description'}
         response = self.client.post(f'/api/series/', serie_dict)
